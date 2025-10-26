@@ -6,7 +6,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
 import Password from "@/components/ui/Password"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
+import { useRegisterMutation } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
 
 
 const RegisterFormSchema = z.object({
@@ -62,22 +64,45 @@ export function RegisterForm({
   ...props
 }: React.HtmlHTMLAttributes<HTMLDivElement>) {
 
+
+  const [register] = useRegisterMutation()
+  const navigate = useNavigate()
+
     const form = useForm<z.infer<typeof RegisterFormSchema>>({
         resolver:zodResolver(RegisterFormSchema),
         defaultValues:{
-            name:"",
-            nidNumber:"",
-            phone:"",
-            email:"",
-            password:"",
-            confirmPassword:''
+          name:"",
+          nidNumber:"",
+          phone:"",
+          email:"",
+          password:"",
+          confirmPassword:''
         }
     })
 
 
 
-    const onSubmit  = (data : z.infer<typeof RegisterFormSchema>) =>{
-        console.log(data)
+    const onSubmit  =async (data : z.infer<typeof RegisterFormSchema>) =>{
+      const userInfo = {
+        name:data.name,
+        nidNumber:data.nidNumber,
+        phone:data.phone,
+        email:data.email,
+        password:data.password,
+      }  
+      try {
+          const result = await register(userInfo).unwrap()
+
+          if(result.success){
+
+            toast.success("User created successfully")
+            navigate("/login")
+          }
+          console.log(result)
+        } catch (error) {
+          console.log(error)
+          toast.error("Something went wrong!!!! Check all the thanks again")
+        }
 
     }
 
@@ -193,12 +218,12 @@ export function RegisterForm({
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <Password {...field}></Password>
               </FormControl>
               <FormDescription className="sr-only">
-                Password Field
+               Confirm Password Field
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -207,7 +232,7 @@ export function RegisterForm({
 
         
 
-        <Button className="mt-2" type="submit">Login</Button>
+        <Button className="mt-2 w-full" type="submit">Register</Button>
 
                 </form>
 

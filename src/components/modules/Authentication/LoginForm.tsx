@@ -6,7 +6,9 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
 import Password from "@/components/ui/Password"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
+import { useLoginMutation } from "@/redux/features/auth/auth.api"
+import { toast } from "sonner"
 
 const formSchema = z.object({
     email: z
@@ -23,6 +25,9 @@ export function LoginForm({
   ...props
 }: React.HtmlHTMLAttributes<HTMLDivElement>) {
 
+  const [login] = useLoginMutation()
+  const navigate = useNavigate()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues:{
@@ -33,8 +38,25 @@ export function LoginForm({
 
 
 
-    const onSubmit  = (data : z.infer<typeof formSchema>) =>{
-        console.log(data)
+    const onSubmit  =async (data : z.infer<typeof formSchema>) =>{
+        const payload = {
+          email:data.email,
+          password:data.password
+        }
+
+       try {
+        const res = await login(payload).unwrap()
+
+        if(res?.data?.email) {
+
+          toast.success("User login successfully")
+          navigate('/') 
+        }
+
+
+       } catch (error) {
+        console.log(error)
+       }
 
     }
 
