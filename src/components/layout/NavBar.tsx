@@ -17,11 +17,18 @@ import { Link } from "react-router"
 import { authApi, useLogoutMutation, useUserQuery } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
 import { useAppDispatch } from "@/redux/hook"
+import { role } from "@/constants/role"
+import React from "react"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "Home", role:"PUBLIC"},
+  { href: "/about", label: "About", role:"PUBLIC" },
+  { href: "/update-profile", label: "My Profile" ,role:"PUBLIC" },
+  { href: "/transaction", label: "Transaction Details", role:"PUBLIC"},
+  { href: "/admin", label: "Dashboard",role:role.SUPER_ADMIN  },
+  { href: "/user", label: "Dashboard",role:role.USER  },
+  { href: "/agent", label: "Dashboard",role:role.AGENT },
 ]
 
 export default function NavBar() {
@@ -87,7 +94,9 @@ const dispatch = useAppDispatch()
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
+                    <React.Fragment key={index}>
+                    {link.role === "PUBLIC" &&
+                      <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink
                       asChild
                         className="py-1.5"
@@ -98,6 +107,21 @@ const dispatch = useAppDispatch()
                         </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
+                    }
+                    {link.role === data?.data?.role &&
+                      <NavigationMenuItem key={index} className="w-full">
+                      <NavigationMenuLink
+                      asChild
+                        className="py-1.5"
+                       
+                      >
+                        <Link to={link.href}>
+                        {link.label}
+                        </Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    }
+                    </React.Fragment>
                   ))}
                 </NavigationMenuList>
               </NavigationMenu>
@@ -105,24 +129,41 @@ const dispatch = useAppDispatch()
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link to="/" className="text-primary hover:text-primary/90">
               <Logo />
-            </a>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                     
-                      asChild
-                      className="py-1.5 font-medium text-muted-foreground hover:text-primary"
-                    >
-                      <Link to={link.href}>
-                      {link.label}
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
+                   <React.Fragment key={index}>
+                   {link.role === "PUBLIC"  &&
+                     <NavigationMenuItem key={index} className="w-full">
+                     <NavigationMenuLink
+                     asChild
+                       className="py-1.5"
+                      
+                     >
+                       <Link to={link.href}>
+                       {link.label}
+                       </Link>
+                     </NavigationMenuLink>
+                   </NavigationMenuItem>
+                   }
+                   {link.role === data?.data?.role  &&
+                     <NavigationMenuItem key={index} className="w-full">
+                     <NavigationMenuLink
+                     asChild
+                       className="py-1.5"
+                      
+                     >
+                       <Link to={link.href}>
+                       {link.label}
+                       </Link>
+                     </NavigationMenuLink>
+                   </NavigationMenuItem>
+                   }
+                   </React.Fragment>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
