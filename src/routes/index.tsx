@@ -10,6 +10,10 @@ import { agentSidebarItems } from "./agentSideBar";
 import Update from "@/pages/Update";
 import GetTransHistory from "@/pages/GetTransHistory";
 import { lazy } from "react";
+import Unauthorized from "@/pages/Unauthorized";
+import { withAuth } from "@/utils/withAuth";
+import { role } from "@/constants/role";
+import type { TRole } from "@/types";
 
 const DashBoardLayout  = lazy(()=>import("@/components/layout/DashBoardLayout"))
 
@@ -26,11 +30,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "update-profile",
-                Component:Update
+                Component:withAuth(Update)
               },
               {
                 path: "transaction",
-                Component:GetTransHistory
+                Component:withAuth(GetTransHistory)
               },
         ],
 
@@ -38,17 +42,17 @@ export const router = createBrowserRouter([
 
     },
     {
-        Component:DashBoardLayout,
+        Component:withAuth(DashBoardLayout,role.SUPER_ADMIN as TRole),
         path:"/admin",
         children:[{index:true,element:<Navigate to="/admin/getallUsers"/>},...generateRoutes(adminSidebarItems)]
     },
     {
-        Component:DashBoardLayout,
+        Component:withAuth(DashBoardLayout),
         path:"/user",
         children:[{index:true,element:<Navigate to="/user/send-money"/>},...generateRoutes(userSidebarItems)]
     },
     {
-        Component:DashBoardLayout,
+        Component:withAuth(DashBoardLayout),
         path:"/agent",
         children:[{index:true,element:<Navigate to="/agent/cashIn"/>},...generateRoutes(agentSidebarItems)]
     },
@@ -59,6 +63,10 @@ export const router = createBrowserRouter([
     {
         Component:Register,
         path:"register"
+    },
+    {
+        Component:Unauthorized,
+        path:"unAuthorized"
     },
     
 ])

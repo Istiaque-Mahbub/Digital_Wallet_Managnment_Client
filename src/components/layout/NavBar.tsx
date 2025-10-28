@@ -35,6 +35,7 @@ export default function NavBar() {
 
   const {data} = useUserQuery(undefined)
  const [logout] = useLogoutMutation()
+ console.log(data)
 const dispatch = useAppDispatch()
   const handleLogout = async() =>{
      try {
