@@ -25,11 +25,28 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
 
+
+    phone: builders.query({
+      query: (phoneNumber) => ({
+        url: `/user/phone/${phoneNumber}`,
+        method: "GET",
+      }),
+    }),
+
+
+    getAllUsers: builders.query({
+      query: () => ({
+        url: "user/all-users",
+        method: "GET",
+      }),
+    }),
+
     user: builders.query({
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
+      providesTags:["Transaction"]
     }),
   }),
 });
@@ -38,5 +55,7 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useUserQuery,
-  useLogoutMutation
+  useLogoutMutation,
+  useLazyPhoneQuery,
+  useGetAllUsersQuery
 } = authApi;

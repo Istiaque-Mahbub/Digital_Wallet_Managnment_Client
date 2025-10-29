@@ -19,12 +19,12 @@ import { toast } from "sonner"
 import { useAppDispatch } from "@/redux/hook"
 import { role } from "@/constants/role"
 import React from "react"
+import { cn } from './../../lib/utils';
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role:"PUBLIC"},
   { href: "/about", label: "About", role:"PUBLIC" },
-  { href: "/update-profile", label: "My Profile" ,role:"PUBLIC" },
   { href: "/transaction", label: "Transaction Details", role:"PUBLIC"},
   { href: "/admin", label: "Dashboard",role:role.SUPER_ADMIN  },
   { href: "/user", label: "Dashboard",role:role.USER  },
@@ -36,6 +36,7 @@ export default function NavBar() {
   const {data} = useUserQuery(undefined)
  const [logout] = useLogoutMutation()
  console.log(data)
+ console.log(data?.data?.wallet?.balance)
 const dispatch = useAppDispatch()
   const handleLogout = async() =>{
      try {
@@ -171,7 +172,19 @@ const dispatch = useAppDispatch()
           </div>
         </div>
         {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+        {
+          data?.data?.role === role.SUPER_ADMIN
+          &&data?.data?.adminCommission && <p>Admin Commission: <span className={cn("font-bold" ,data?.data?.adminCommission > 10 ? "text-blue-500" : "text-red-500" )}> ${data?.data?.adminCommission}</span> </p>
+        }
+        {
+          data?.data?.role === role.USER
+          &&data?.data?.wallet?.balance && <p>Balance: <span className={cn("font-bold" ,data?.data?.wallet?.balance > 10 ? "text-blue-500" : "text-red-500" )}>${data?.data?.wallet?.balance}</span> </p>
+        }
+        {
+          data?.data?.role === role.AGENT
+          &&data?.data?.wallet?.agentMoney && <p>Agent Balance: <span className={cn("font-bold" ,data?.data?.wallet?.balance > 10 ? "text-blue-500" : "text-red-500" )}>${data?.data?.wallet?.agentMoney}</span> </p>
+        }
           <ModeToggle/>
           {data?.data?.email ? (
             <Button onClick={handleLogout} variant="outline" size="sm" className="text-sm">

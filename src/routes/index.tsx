@@ -7,7 +7,6 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminRoets";
 import { userSidebarItems } from "./usersSidebarItems";
 import { agentSidebarItems } from "./agentSideBar";
-import Update from "@/pages/Update";
 import GetTransHistory from "@/pages/GetTransHistory";
 import { lazy } from "react";
 import Unauthorized from "@/pages/Unauthorized";
@@ -28,10 +27,6 @@ export const router = createBrowserRouter([
                 Component:About,
                 path:"about"
             },
-            {
-                path: "update-profile",
-                Component:withAuth(Update)
-              },
               {
                 path: "transaction",
                 Component:withAuth(GetTransHistory)
