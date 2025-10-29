@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/sidebar"
 import Logo from "@/assets/icons/Logo"
 import { Link } from "react-router"
-import { useUserQuery } from "@/redux/features/auth/auth.api"
 import { getSidebarItems } from "@/utils/getSidebarItems"
+import { useUserQuery } from "@/redux/features/user/userApi"
 
 
 

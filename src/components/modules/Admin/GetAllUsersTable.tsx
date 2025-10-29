@@ -8,7 +8,8 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import Loading from "@/pages/Loading"
-import { useGetAllUsersQuery } from "@/redux/features/auth/auth.api"
+import { useGetAllUsersQuery } from "@/redux/features/user/userApi"
+
 
 
   

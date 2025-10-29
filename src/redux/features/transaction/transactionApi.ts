@@ -22,6 +22,15 @@ const transApi = baseApi.injectEndpoints({
             invalidatesTags:['Transaction']
         }),
 
+        cashIn: builders.mutation({
+            query:(sendInfo)=>({
+                url:"/transaction/cash-in",
+                method:"POST",
+                data:sendInfo
+            }),
+            invalidatesTags:['Transaction']
+        }),
+
         getIndividualTrans: builders.query({
             query:(id)=>({
                 url:`/transaction/individual-transaction/${id}`,
@@ -40,4 +49,4 @@ const transApi = baseApi.injectEndpoints({
     })
 })
 
-export const {useSendMoneyMutation,useCashOutMutation,useGetIndividualTransQuery,useGetAllTransQuery} = transApi
+export const {useSendMoneyMutation,useCashOutMutation,useGetIndividualTransQuery,useGetAllTransQuery,useCashInMutation} = transApi

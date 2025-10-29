@@ -7,8 +7,8 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
-import { useUserQuery } from "@/redux/features/auth/auth.api"
 import { useGetIndividualTransQuery } from "@/redux/features/transaction/transactionApi"
+import { useUserQuery } from "@/redux/features/user/userApi"
 
   
  

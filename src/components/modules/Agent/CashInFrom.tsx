@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
 import { toast } from "sonner"
-import { useSendMoneyMutation } from "@/redux/features/transaction/transactionApi"
+import { useCashInMutation } from "@/redux/features/transaction/transactionApi"
 import { useLazyPhoneQuery } from "@/redux/features/user/userApi"
 
 
 
-const sendMoneyFormSchema = z.object({
+const cashInFormSchema = z.object({
     phone: z
         .string()
         .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
@@ -21,44 +21,47 @@ const sendMoneyFormSchema = z.object({
   })
 
   
-  export function SendMoneyFrom({
+  export function CashInFrom({
       className,
       ...props
     }: React.HtmlHTMLAttributes<HTMLDivElement>) {
         
         const [triggerPhoneQuery] = useLazyPhoneQuery()
 
-        const [sendMoney] = useSendMoneyMutation()
+       const [cashIn] = useCashInMutation()
         
         
-        const form = useForm<z.infer<typeof sendMoneyFormSchema>>({
-            resolver:zodResolver(sendMoneyFormSchema),
+        const form = useForm<z.infer<typeof cashInFormSchema>>({
+            resolver:zodResolver(cashInFormSchema),
             defaultValues:{
                 phone:"",
                 amount:""
             }
         })
+       
+
         
         
-        
-        const onSubmit  =async (data : z.infer<typeof sendMoneyFormSchema>) =>{
-            
+        const onSubmit  = async (data : z.infer<typeof cashInFormSchema>) =>{
+            console.log(data)
             const toastId = toast.loading("Money sending.....")
         try {
             
-            const receiverID = await triggerPhoneQuery(data.phone).unwrap()
+            const receiverID = await triggerPhoneQuery("01847246678").unwrap()
 
             if(receiverID){
                 const id = receiverID?.data?._id
 
-                const sendMoneyPayload = {
+                console.log(id)
+
+                const cashInPayload = {
                     receiverId:id,
                     amount:Number(data?.amount)
                 }
 
-                const result = await sendMoney(sendMoneyPayload).unwrap()
+                const result = await cashIn(cashInPayload).unwrap()
                console.log(result)
-                toast.success("Money send successfully",{id:toastId})
+                toast.success("Cash In successfully",{id:toastId})
             }
             
             
@@ -79,7 +82,7 @@ const sendMoneyFormSchema = z.object({
 
         <div className="flex flex-col items-center gap-4 text-center">
 
-            <p className="text-sm text-gray-400 ">Enter your Phone Number and Amount bellow</p>
+            <p className="text-sm text-gray-400 ">Enter User Phone Number and Amount bellow</p>
 
         </div>
 
@@ -95,12 +98,12 @@ const sendMoneyFormSchema = z.object({
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Receiver Phone Number</FormLabel>
+              <FormLabel>User Phone Number</FormLabel>
               <FormControl>
                 <Input  placeholder="Enter receiver phone number" {...field} />
               </FormControl>
               <FormDescription className="sr-only">
-              Receiver Phone Number Field
+               User Phone Number Field
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -124,7 +127,7 @@ const sendMoneyFormSchema = z.object({
             </FormItem>
           )}
         />
-        <Button className="mt-2 w-full" type="submit">Send</Button>
+        <Button className="mt-2 w-full" type="submit">Cash Out</Button>
 
                 </form>
 

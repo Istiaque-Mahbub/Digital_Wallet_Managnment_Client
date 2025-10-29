@@ -54,8 +54,9 @@ export function LoginForm({
         }
 
 
-       } catch (error) {
+       } catch (error:any) {
         console.log(error)
+        toast.error(error?.data?.message)
        }
 
     }

@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
-import { useLazyPhoneQuery } from "@/redux/features/auth/auth.api"
 import { toast } from "sonner"
 import { useCashOutMutation } from "@/redux/features/transaction/transactionApi"
+import { useLazyPhoneQuery } from "@/redux/features/user/userApi"
 
 
 
