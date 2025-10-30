@@ -22,9 +22,10 @@ const [secondsLeft, setSecondsLeft] = useState(10)
 
 const handleLogout =async () =>{
     try {
-        const res = await logout(undefined).unwrap()
+         await logout(undefined).unwrap()
         toast.success("Logout successfully")
          navigate("/login")
+         
     } catch (error) {
         toast.error("Logout failed")
       console.error(error)
