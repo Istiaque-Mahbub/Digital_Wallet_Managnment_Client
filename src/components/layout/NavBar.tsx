@@ -21,6 +21,8 @@ import { role } from "@/constants/role"
 import React from "react"
 import { cn } from './../../lib/utils';
 import { useUserQuery } from "@/redux/features/user/userApi"
+import { is } from "zod/v4/locales"
+import Loading from "@/pages/Loading"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -34,8 +36,11 @@ const navigationLinks = [
 
 export default function NavBar() {
 
-  const {data} = useUserQuery(undefined)
+  const {data,isLoading} = useUserQuery(undefined)
  const [logout] = useLogoutMutation()
+ if(isLoading){
+  return <Loading/>
+ }
  console.log(data)
  console.log(data?.data?.wallet?.balance)
 const dispatch = useAppDispatch()
@@ -187,7 +192,7 @@ const dispatch = useAppDispatch()
           &&data?.data?.wallet?.agentMoney && <p>Agent Balance: <span className={cn("font-bold" ,data?.data?.wallet?.balance > 10 ? "text-blue-500" : "text-red-500" )}>${data?.data?.wallet?.agentMoney}</span> </p>
         }
           <ModeToggle/>
-          {data?.data?.email ? (
+          {!isLoading && data?.data?.email ? (
             <Button onClick={handleLogout} variant="outline" size="sm" className="text-sm">
             Logout
           </Button>

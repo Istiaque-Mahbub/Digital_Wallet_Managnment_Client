@@ -44,19 +44,21 @@ export function LoginForm({
           password:data.password
         }
 
+        const toastId = toast.loading("Login.......")
+
        try {
         const res = await login(payload).unwrap()
 
         if(res?.data?.email) {
 
-          toast.success("User login successfully")
+          toast.success("User login successfully",{id:toastId})
           navigate('/') 
         }
 
 
        } catch (error:any) {
         console.log(error)
-        toast.error(error?.data?.message)
+        toast.error(error?.data?.message,{id:toastId})
        }
 
     }

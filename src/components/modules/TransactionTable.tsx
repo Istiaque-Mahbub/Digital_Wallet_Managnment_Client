@@ -7,6 +7,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
+import Loading from "@/pages/Loading"
 import { useGetIndividualTransQuery } from "@/redux/features/transaction/transactionApi"
 import { useUserQuery } from "@/redux/features/user/userApi"
 
@@ -14,10 +15,13 @@ import { useUserQuery } from "@/redux/features/user/userApi"
  
   
   export function TransactionTable() {
-    const {data:userData} = useUserQuery(undefined)
+    const {data:userData,isLoading} = useUserQuery(undefined)
     console.log(userData?.data?._id)
     const {data:transData} = useGetIndividualTransQuery(userData?.data?._id)
     console.log(transData?.data?.data)
+    if(isLoading){
+      return <Loading/>
+    }
     if(!transData?.data){
        <p className="flex justify-center items-center text-5xl font-semibold"> No transaction history found!!! Make any transaction first </p>
     }
@@ -36,7 +40,7 @@ import { useUserQuery } from "@/redux/features/user/userApi"
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transData?.data?.data?.map((data:any) => (
+          {!isLoading && transData?.data?.data?.map((data:any) => (
             <TableRow key={data._id}>
               <TableCell className="font-medium">{data.user}</TableCell>
               <TableCell className="font-medium">{data.wallet}</TableCell>
