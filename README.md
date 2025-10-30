@@ -77,6 +77,7 @@ src/
 │ ├── adminRoets.ts
 │ ├── agentSideBar.tsx
 │ └── usersSidebarItems.ts
+
 │
 ├── constants/
 │ └── role.ts
@@ -181,10 +182,14 @@ All components from ShadCN UI and HyperUI support Tailwind’s dark mode out of 
 
 ---
 
-State Management
+### State Management
 
 redux/store.ts configures the global store.
 
 baseApi.ts defines a base RTK Query API layer using Axios.
 
 Each feature (e.g., authApi, userApi, transactionApi) extends this base for modular endpoints.
+
+---
+### Backend Repo-https://github.com/Istiaque-Mahbub/Digital_Wallet_Managnment
+
