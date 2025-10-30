@@ -170,8 +170,10 @@ bun run dev
 | `bun run build`   | Build the app for production |
 | `bun run preview` | Preview the production build |
 | `bun run lint`    | Run linting checks           |
+```
 
 ---
+
 ### 🌗 Theming
 
 Dark/Light theme switching is managed via a React Context (theme.context.ts) and persisted in local storage.
