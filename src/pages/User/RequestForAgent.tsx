@@ -1,7 +1,6 @@
 
 import { Button } from '@/components/ui/button';
 import { usePayNowMutation, useRequestForAgentMutation, useUserQuery } from '@/redux/features/user/userApi';
-import { useState } from 'react';
 import { toast } from 'sonner';
 export default function RequestForAgent() {
   const [requestForAgent] = useRequestForAgentMutation()
