@@ -13,6 +13,11 @@ import Unauthorized from "@/pages/Unauthorized";
 import { withAuth } from "@/utils/withAuth";
 import { role } from "@/constants/role";
 import type { TRole } from "@/types";
+import { AgentRequestSuccess } from "@/pages/User/AgentRequestSuccess";
+import { AgentRequestFail } from "@/pages/User/AgentRequestFail";
+import { AgentRequestCancel } from "@/pages/User/AgentRequestCancel";
+
+import Home from "@/pages/Home";
 
 const DashBoardLayout  = lazy(()=>import("@/components/layout/DashBoardLayout"))
 
@@ -23,6 +28,10 @@ export const router = createBrowserRouter([
         Component: App,
         path: "/",
         children:[
+            {
+                Component:Home,
+                index:true
+            },
             {
                 Component:About,
                 path:"about"
@@ -62,6 +71,18 @@ export const router = createBrowserRouter([
     {
         Component:Unauthorized,
         path:"unAuthorized"
+    },
+    {
+        Component:(AgentRequestSuccess),
+        path:"success"
+    },
+    {
+        Component:withAuth(AgentRequestFail),
+        path:"fail"
+    },
+    {
+        Component:withAuth(AgentRequestCancel),
+        path:"cancel"
     },
     
 ])

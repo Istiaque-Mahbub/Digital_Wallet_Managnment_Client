@@ -26,6 +26,14 @@ export const userApi = baseApi.injectEndpoints({
       }),
     }),
 
+    agentAddMoney: builders.mutation({
+      query: (amount) => ({
+        url: "/user/agent-request-add-money",
+        method: "POST",
+        data:amount
+      }),
+    }),
+
 
     getAllUsers: builders.query({
       query: () => ({
@@ -49,5 +57,6 @@ export const {
   useLazyPhoneQuery,
   useGetAllUsersQuery,
   useRequestForAgentMutation,
-  usePayNowMutation
+  usePayNowMutation,
+  useAgentAddMoneyMutation
 } = userApi;
