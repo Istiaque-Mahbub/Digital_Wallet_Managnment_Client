@@ -1,73 +1,188 @@
-# React + TypeScript + Vite
+# 🪙 Digital Wallet System — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 💻 Overview
 
-Currently, two official plugins are available:
+This is the **frontend** of a full-stack **Digital Wallet System** inspired by **bKash / Nagad**, built with **React + TypeScript + ShadCN + HyperUI + Redux Toolkit + Bun**.  
+It provides a smooth, responsive UI for multiple roles — **Super Admin, Admin, Agent, and User** — to perform wallet operations such as sending money, managing transactions, and approving agents.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ⚙️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Category | Technology |
+|-----------|-------------|
+| Framework | [React](https://react.dev/) + [Vite](https://vitejs.dev/) |
+| Language | TypeScript |
+| UI | [ShadCN UI](https://ui.shadcn.com/) + [HyperUI](https://www.hyperui.dev/) |
+| State Management | Redux Toolkit + RTK Query |
+| Routing | React Router DOM v6 |
+| Auth | JWT-based via Backend API |
+| Package Manager | [Bun](https://bun.sh/) |
+| Styling | Tailwind CSS |
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📂 Project Structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+src/
+├── App.tsx
+├── main.tsx
+├── index.css
+│
+├── assets/
+│ ├── icons/
+│ ├── images/
+│ └── react.svg
+│
+├── components/
+│ ├── layout/
+│ ├── modules/
+│ ├── ui/
+│ ├── app-sidebar.tsx
+│ └── ...
+│
+├── context/
+│ └── theme.context.ts
+│
+├── hooks/
+│ ├── useTheme.ts
+│ └── use-mobile.ts
+│
+├── lib/
+│ ├── axios.ts
+│ └── utils.ts
+│
+├── pages/
+│ ├── Home.tsx
+│ ├── About.tsx
+│ ├── Login.tsx
+│ ├── Register.tsx
+│ ├── Unauthorized.tsx
+│ ├── GetTransHistory.tsx
+│ ├── Admin/
+│ ├── Agent/
+│ └── User/
+│
+├── providers/
+│ └── theme.provider.tsx
+│
+├── redux/
+│ ├── baseApi.ts
+│ ├── features/
+│ ├── hook.ts
+│ └── store.ts
+│
+├── routes/
+│ ├── index.tsx
+│ ├── adminRoets.ts
+│ ├── agentSideBar.tsx
+│ └── usersSidebarItems.ts
+│
+├── constants/
+│ └── role.ts
+│
+├── types/
+│ └── index.ts
+│
+└── utils/
+├── withAuth.tsx
+├── generateRoutes.ts
+├── getSidebarItems.ts
+└── ...
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚦 Routing Setup
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+All routes are defined in `src/routes/index.tsx` and are **role-protected** using the `withAuth()` higher-order component.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 🏠 Public Routes
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+| Path | Component | Description |
+|------|------------|-------------|
+| `/` | `Home` | Landing page |
+| `/about` | `About` | About page |
+| `/login` | `Login` | Login page |
+| `/register` | `Register` | Registration page |
+| `/unAuthorized` | `Unauthorized` | Unauthorized access |
+| `/transaction` | `GetTransHistory` | View personal transaction history |
+| `/success`, `/fail`, `/cancel` | Payment result pages |
+
+---
+
+### 🧑‍💼 Super Admin / Admin Routes
+
+`/admin/...` routes are accessible only to **SUPER_ADMIN** or **ADMIN** roles.
+
+| Title | Path | Component |
+|--------|------|-----------|
+| All Users Data | `/admin/getallUsers` | `GetAllUsers` |
+| All Transactions List | `/admin/getAllTransaction` | `GetAllTransactions` |
+
+---
+
+### 🧑 Agent Routes
+
+Accessible to users with the **AGENT** role.
+
+| Title | Path | Component |
+|--------|------|-----------|
+| Cash In | `/agent/cashIn` | `CashIn` |
+| Request for Agent Money | `/agent/request-for-agent-money` | `RequestAgentMoney` |
+
+---
+
+### 👤 User Routes
+
+Accessible to users with the **USER** role.
+
+| Title | Path | Component |
+|--------|------|-----------|
+| Send Money | `/user/send-money` | `SendMoney` |
+| Request for Agent | `/user/request-for-agent` | `RequestForAgent` |
+| Cash Out | `/user/cash-out` | `CashOut` |
+
+---
+
+## 🔐 Authentication
+
+- Login and Register pages communicate with the backend API via RTK Query.  
+- Upon login, a **JWT token** is stored securely and attached to all future requests.  
+- Routes are protected using the `withAuth()` HOC, ensuring users can only access their authorized pages.
+
+---
+
+## 🧰 Installation & Setup
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/Istiaque-Mahbub/Digital_Wallet_Managnment_Client
+cd digital-wallet-frontend
+
+bun install
+VITE_API_URL=http://localhost:5000/api/v1
+bun run dev
+---
+| Command           | Description                  |
+| ----------------- | ---------------------------- |
+| `bun run dev`     | Start the development server |
+| `bun run build`   | Build the app for production |
+| `bun run preview` | Preview the production build |
+| `bun run lint`    | Run linting checks           |
+
+---
+### 🌗 Theming
+
+Dark/Light theme switching is managed via a React Context (theme.context.ts) and persisted in local storage.
+All components from ShadCN UI and HyperUI support Tailwind’s dark mode out of the box.
+
+---
+
+State Management
+
+redux/store.ts configures the global store.
+
+baseApi.ts defines a base RTK Query API layer using Axios.
+
+Each feature (e.g., authApi, userApi, transactionApi) extends this base for modular endpoints.
